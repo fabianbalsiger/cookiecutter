@@ -110,7 +110,9 @@ jobs:
         run: |
           cd ~
           pwd
+          ls
           cookiecutter /home/runner/work/cookiecutter/cookiecutter --no-input
+          ls
           echo "cc_python_version=$(cat ~/fabian-project/.python-version)"
           echo "cc_python_version=$(cat ~/fabian-project/.python-version)" >> $GITHUB_ENV
           echo "cc_venv=$(cat ~/fabian-project/.venv)"
