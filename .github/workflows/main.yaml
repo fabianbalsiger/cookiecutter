@@ -110,9 +110,9 @@ jobs:
         run: |
           cd ~
           pwd
-          cookiecutter /home/runner/work/coefficient-cookiecutter/coefficient-cookiecutter --no-input
-          echo "cc_python_version=$(cat ~/coefficient-project/.python-version)"
-          echo "cc_python_version=$(cat ~/coefficient-project/.python-version)" >> $GITHUB_ENV
+          cookiecutter /home/runner/work/cookiecutter/cookiecutter --no-input
+          echo "cc_python_version=$(cat ~/fabian-project/.python-version)"
+          echo "cc_python_version=$(cat ~/fabian-project/.python-version)" >> $GITHUB_ENV
           echo "cc_venv=$(cat ~/coefficient-project/.venv)"
           echo "cc_venv=$(cat ~/coefficient-project/.venv)" >> $GITHUB_ENV
 
@@ -125,7 +125,7 @@ jobs:
 
       - name: Create cookiecuttered Python environment
         run: |
-          cd ~/coefficient-project
+          cd ~/fabian-project
           pwd
           pyenv local $(cat .python-version)
           python -V
@@ -141,7 +141,7 @@ jobs:
 
       - name: Install Poetry and Python dependencies
         run: |
-          cd ~/coefficient-project
+          cd ~/fabian-project
           pyenv local $(cat .python-version)
           source $(cat .venv)/bin/activate
           curl -sSL https://install.python-poetry.org | python3 -
@@ -154,14 +154,14 @@ jobs:
 
       - name: pytest
         run: |
-          cd ~/coefficient-project
+          cd ~/fabian-project
           pyenv local $(cat .python-version)
           source $(cat .venv)/bin/activate
           pytest
 
       - name: Towncrier
         run: |
-          cd ~/coefficient-project
+          cd ~/fabian-project
           pyenv local $(cat .python-version)
           source $(cat .venv)/bin/activate
           git init
@@ -171,7 +171,7 @@ jobs:
 
       - name: pre-commit
         run: |
-          cd ~/coefficient-project
+          cd ~/fabian-project
           pyenv local $(cat .python-version)
           source $(cat .venv)/bin/activate
           detect-secrets --verbose scan \
