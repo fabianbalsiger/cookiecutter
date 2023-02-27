@@ -1,4 +1,4 @@
-"""Barely functional tests for graspit-coefficient (not the project it generates).
+"""Barely functional tests for graspit-cookiecutter (not the project it generates).
 
 Usage:
     pytest -s ./tests/test_graspit_cookiecutter.py
