@@ -7,7 +7,7 @@ version = "{{ cookiecutter.version }}"
 description = "{{ cookiecutter.project_short_description }}"
 authors = ["{{ cookiecutter.full_name.replace('\"', '\\\"') }} <{{ cookiecutter.email }}>"]
 license = "UNLICENSED"
-classifiers = ["Private :: Do Not Upload"]
+#classifiers = ["Private :: Do Not Upload"]
 packages = [
   { include = "{{ cookiecutter.package_name }}", from = "{{ cookiecutter.package_name }}" },
   # Add more packages here, e.g.
@@ -34,7 +34,6 @@ ipdb = "^0.13.9"
 isort = "^5.10.1"
 jupyter-black = "^0.3.1"
 pip-audit = "^2.4.4"
-poetryup = "^0.8.2"
 pre-commit = "^2.20.0"
 pylint = "^2.15.2"
 pytest = "^7.1.3"

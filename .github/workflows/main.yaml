@@ -35,7 +35,7 @@ jobs:
           which python
 
       - name: Set up Poetry cache
-        uses: actions/cache@v3.0.8
+        uses: actions/cache@v3
         with:
           path: venv
           key: venv-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
@@ -64,7 +64,7 @@ jobs:
           print("::set-output name=result::{}".format(result))
 
       - name: Restore pre-commit cache
-        uses: actions/cache@v3.0.8
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pre-commit
           key: ${{ steps.pre-commit-cache.outputs.result }}-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -110,40 +110,41 @@ jobs:
         run: |
           cd ~
           pwd
-          cookiecutter /home/runner/work/coefficient-cookiecutter/coefficient-cookiecutter --no-input
-          echo "cc_python_version=$(cat ~/coefficient-project/.python-version)"
-          echo "cc_python_version=$(cat ~/coefficient-project/.python-version)" >> $GITHUB_ENV
-          echo "cc_venv=$(cat ~/coefficient-project/.venv)"
-          echo "cc_venv=$(cat ~/coefficient-project/.venv)" >> $GITHUB_ENV
+          cookiecutter /home/runner/work/cookiecutter/cookiecutter --no-input
+          cd graspit-project
+          echo "cc_python_version=$(sed "s/\/envs.*//" .python-version)"
+          echo "cc_python_version=$(sed "s/\/envs.*//" .python-version)" >> $GITHUB_ENV
+          echo "cc_venv=$(sed "s/\/envs\// /" .python-version)"
+          echo "cc_venv=$(sed "s/\/envs\// /" .python-version)" >> $GITHUB_ENV
 
       # TODO: This can be replaced I think with actions/setup-python?
 
       - name: Install pyenv
-        uses: "gabrielfalcao/pyenv-action@v10"
+        uses: "gabrielfalcao/pyenv-action@v13"
         with:
           default: ${{ env.cc_python_version }}
 
       - name: Create cookiecuttered Python environment
         run: |
-          cd ~/coefficient-project
+          cd ~/graspit-project
           pwd
-          pyenv local $(cat .python-version)
+          pyenv local $(sed "s/\/envs.*//" .python-version)
           python -V
-          python -m venv $(cat .venv)
+          python -m venv $(sed "s/\/envs\// /" .python-version)
           python -V
           python -m pip install --upgrade pip
 
       - name: Set up Poetry cache
-        uses: actions/cache@v3.0.8
+        uses: actions/cache@v3
         with:
           path: ${{ env.cc_venv }}
-          key: ${{ env.cc_venv }}-${{ matrix.python-version }}-${{ hashFiles('coefficient-project/poetry.lock') }}
+          key: ${{ env.cc_venv }}-${{ matrix.python-version }}-${{ hashFiles('graspit-project/poetry.lock') }}
 
       - name: Install Poetry and Python dependencies
         run: |
-          cd ~/coefficient-project
-          pyenv local $(cat .python-version)
-          source $(cat .venv)/bin/activate
+          cd ~/graspit-project
+          pyenv local $(sed "s/\/envs.*//" .python-version)
+          source $(sed "s/\/envs\// /" .python-version)/bin/activate
           curl -sSL https://install.python-poetry.org | python3 -
           poetry --version
           poetry config virtualenvs.in-project true
@@ -154,16 +155,16 @@ jobs:
 
       - name: pytest
         run: |
-          cd ~/coefficient-project
-          pyenv local $(cat .python-version)
-          source $(cat .venv)/bin/activate
+          cd ~/graspit-project
+          pyenv local $(sed "s/\/envs.*//" .python-version)
+          source $(sed "s/\/envs\// /" .python-version)/bin/activate
           pytest
 
       - name: Towncrier
         run: |
-          cd ~/coefficient-project
-          pyenv local $(cat .python-version)
-          source $(cat .venv)/bin/activate
+          cd ~/graspit-project
+          pyenv local $(sed "s/\/envs.*//" .python-version)
+          source $(sed "s/\/envs\// /" .python-version)/bin/activate
           git init
           towncrier create 123.added --no-edit
           towncrier build --version=999 --yes
@@ -171,9 +172,9 @@ jobs:
 
       - name: pre-commit
         run: |
-          cd ~/coefficient-project
-          pyenv local $(cat .python-version)
-          source $(cat .venv)/bin/activate
+          cd ~/graspit-project
+          pyenv local $(sed "s/\/envs.*//" .python-version)
+          source $(sed "s/\/envs\// /" .python-version)/bin/activate
           detect-secrets --verbose scan \
             --exclude-files 'poetry\.lock' \
             --exclude-files '\.secrets\.baseline' \

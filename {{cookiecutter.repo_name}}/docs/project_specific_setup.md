@@ -2,13 +2,13 @@
 
 This document contains setup instructions specifically for this project only. This design enables
 us to keep other docs easily aligned with future upstream changes to
-[coefficient-cookiecutter](https://github.com/CoefficientSystems/coefficient-cookiecutter/).
+[graspit-cookiecutter](https://github.com/fabianbalsiger/cookiecutter/).
 
 
-## Install system-level dependencies with [homebrew](https://brew.sh/)
+## Install system-level dependencies with apt
 
 ```sh
-# brew install wkhtmltopdf
+# apt install wkhtmltopdf
 ```
 
 {% if cookiecutter.use_gcloud == 'y' -%}
