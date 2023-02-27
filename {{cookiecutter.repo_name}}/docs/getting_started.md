@@ -1,22 +1,25 @@
 # Getting Started
 
-This document contains instructions to get a fully working development environment for running this repo.
+This document contains instructions to get a fully working development environment on a Linux machine.
+The instructions follow the [hypermodern Python series](https://medium.com/@cjolowicz/hypermodern-python-d44485d9d769#6e8a).
 
 
-## 1. pyenv
+## 1. [pyenv](https://github.com/pyenv/pyenv)
 
-Install here: [https://github.com/pyenv/pyenv#homebrew-on-macos]
+pyenv is a Python version manager and contains a plugin [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv) that manages virtualenvs across multiple Python versions. Learn more about it [here](https://realpython.com/intro-to-pyenv/). Install it by:
 
-Configure by adding the following to your `~/.zshrc` or equivalent:
+```sh
+curl https://pyenv.run | bash
+```
+
+Configure by adding the following to your `~/.bashrc` or equivalent:
 
 ```sh
 # Pyenv environment variables
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-
-# Pyenv initialization
-eval "$(pyenv init --path)"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 ```
 
 Basic usage:
@@ -25,55 +28,21 @@ Basic usage:
 # Check Python versions
 pyenv install --list
 
-# Install the Python version defined in this repo
-pyenv install $(cat .python-version)
-
 # See installed Python versions
 pyenv versions
-```
 
-
-## 2. [pyenv-virtualenvwrapper](https://github.com/pyenv/pyenv-virtualenvwrapper)
-
-```sh
-# Install with homebrew (recommended if you installed pyenv with homebrew)
-brew install pyenv-virtualenvwrapper
-```
-
-Configure by adding the following to your `~/.zshrc` or equivalent:
-
-```sh
-# pyenv-virtualenvwrapper
-export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/code  # <- change this to wherever you store your repos
-export VIRTUALENVWRAPPER_PYTHON=$HOME/.pyenv/shims/python
-pyenv virtualenvwrapper_lazy
-```
-
-Test everything is working by opening a new shell (e.g. new Terminal window):
-
-```sh
 # Change to the Python version you just installed
-pyenv shell $(cat .python-version)
-# This only needs to be run once after installing a new Python version through pyenv
-# in order to initialise virtualenvwrapper for this Python version
-python -m pip install --upgrade pip
-python -m pip install virtualenvwrapper
-pyenv virtualenvwrapper_lazy
+pyenv shell <version>
 
-# Create test virtualenv (if this doesn't work, try sourcing ~/.zshrc or opening new shell)
-mkvirtualenv venv_test
-which python
-python -V
+# Show list of current environments
+pyenv virtualenvs
 
-# Deactivate & remove test virtualenv
-deactivate
-rmvirtualenv venv_test
+# Activate and deactivate environment
+pyenv activate <name>
+pyenv deactivate
 ```
 
-
-## 3. Get the repo & initialise the repo environment
+## 2. Get the repository and initialise the environment
 
 ⚠️ N.B. You should replace `REPO_GIT_URL` here with your actual URL to your GitHub repo.
 
@@ -81,14 +50,22 @@ rmvirtualenv venv_test
 git clone ${REPO_GIT_URL}
 pyenv shell $(cat .python-version)
 
-# Make a new virtual environment using the Python version & environment name specified in the repo
-mkvirtualenv -p python$(cat .python-version) $(cat .venv)
+# If necessary, install required prerequisites first: https://github.com/pyenv/pyenv/wiki/Common-build-problems
+# Install the Python version
+pyenv install $(sed "s/\/envs.*//" .python-version)
+# Create a virtualenv
+pyenv virtualenv $(sed "s/\/envs\// /" .python-version)
+# The venv will be located at $(pyenv root)/versions
+
+pyenv activate $(sed "s/\/envs\// /" .python-version)
 python -V  # check this is the correct version of Python
 python -m pip install --upgrade pip
 ```
 
+Note that the environment should load and unload automatically in the directory. Check it's working by cd-ing into & out of the repo.
 
-## 4. Install Python requirements into the virtual environment using [Poetry](https://python-poetry.org/docs/)
+
+## 3. Install Python requirements into the virtual environment using [Poetry](https://python-poetry.org/docs/)
 
 Install Poetry onto your system by following the instructions here: [https://python-poetry.org/docs/]
 
@@ -96,39 +73,28 @@ Note that Poetry "lives" outside of project/environment, and if you follow the r
 process it will be installed isolated from the rest of your system.
 
 ```sh
+# Add the poetry plugin "up" for upgrading dependencies: https://github.com/MousaZeidBaker/poetry-plugin-up
+poetry self add poetry-plugin-up
+
 # Update Poetry regularly as you would any other system-level tool. Poetry is environment agnostic,
 # it doesn't matter if you run this command inside/outside the virtualenv.
 poetry self update
 
 # This command should be run inside the virtualenv.
-poetry install --no-root --remove-untracked
+poetry install --no-root --sync
 ```
 
 
-## 5. [zsh-autoswitch-virtualenv](https://github.com/MichaelAquilina/zsh-autoswitch-virtualenv)
-
-Download with `git clone "https://github.com/MichaelAquilina/zsh-autoswitch-virtualenv.git" "$ZSH_CUSTOM/plugins/autoswitch_virtualenv"`
-
-Configure by adding the following to your `~/.zshrc` or equivalent:
-
-```sh
-# Find line containing plugins=(git) and replace with below
-plugins=(git autoswitch_virtualenv)
-```
-
-Check it's working by cd-ing into & out of the repo. The environment should load & unload respectively.
-
-
-## 6. Add secrets into .env
+## 4. Add secrets into .env
 
   - Run `cp .env.template .env` and update the secrets.
   - [Install direnv](https://direnv.net/) to autoload environment variables specified in `.env`
-  - Run `direnv allow` to authorise direnv to load the secrets from `.env` into the environment
+  - Run `direnv allow` to authorise direnv to load the secrets from `.env` (by reading `.envrc`) into the environment
     (these will unload when you `cd` out of the repo; note that you will need to re-run this
     command whenever you change `.env`)
 
 
-## 7. Initialise the `detect-secrets` pre-commit hook
+## 5. Initialise the `detect-secrets` pre-commit hook
 
 We use [`detect-secrets`](https://github.com/Yelp/detect-secrets) to check that no secrets are
 accidentally committed. Please read [docs/detect_secrets.md](docs/detect_secrets.md) for more information.
@@ -157,6 +123,6 @@ whether this is the case. This allows the hook to remember false positives in th
 you to new secrets.
 
 
-## 8. Project-specific setup
+## 6. Project-specific setup
 
 Please check [docs/project_specific_setup.md](docs/project_specific_setup.md) for further instructions.

@@ -2,13 +2,12 @@
 
 ```sh
 # Create feature branch
-poetry-sync
-poetryup --latest
+poetry install --no-root --sync
+poetry up --latest
 # If any issues, likely due to two "latest" packages conflicting. See example below.
-poetry-regenerate
-poetry-sync
+poetry install --no-root --sync
 pre-commit run --all-files --hook-stage=manual
-poetry-sync
+poetry install --no-root --sync
 pytest
 # Commit & push
 ```
@@ -26,7 +25,7 @@ So, because src depends on both blue (^1.4) and green (^0.8), version solving fa
 
 In this situation, do the following:
     - Comment out `blue`
-    - Re-run `poetryup --latest`
-    - Handle any other new package conflicts the same way until poetryup resolves
+    - Re-run `poetry up --latest`
+    - Handle any other new package conflicts the same way until poetry up resolves
     - Uncomment out `blue` with package version that works with `green`, e.g. `blue = "^1.2"`
     - Run `poetry-regenerate` onwards
