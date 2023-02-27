@@ -48,16 +48,17 @@ pyenv deactivate
 
 ```sh
 git clone ${REPO_GIT_URL}
-pyenv shell $(cat .python-version)
+pyenv shell $(sed "s/\/envs.*//" .python-version)
 
 # If necessary, install required prerequisites first: https://github.com/pyenv/pyenv/wiki/Common-build-problems
 # Install the Python version
 pyenv install $(sed "s/\/envs.*//" .python-version)
+
 # Create a virtualenv
 pyenv virtualenv $(sed "s/\/envs\// /" .python-version)
 # The venv will be located at $(pyenv root)/versions
 
-pyenv activate $(sed "s/\/envs\// /" .python-version)
+pyenv activate $(cat .python-version)
 python -V  # check this is the correct version of Python
 python -m pip install --upgrade pip
 ```
