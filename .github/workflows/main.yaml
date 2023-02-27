@@ -120,7 +120,7 @@ jobs:
       # TODO: This can be replaced I think with actions/setup-python?
 
       - name: Install pyenv
-        uses: "gabrielfalcao/pyenv-action@v10"
+        uses: "gabrielfalcao/pyenv-action@v13"
         with:
           default: ${{ env.cc_python_version }}
 
@@ -128,9 +128,9 @@ jobs:
         run: |
           cd ~/graspit-project
           pwd
-          pyenv local $(cat .python-version)
+          pyenv local $(sed "s/\/envs.*//" .python-version)
           python -V
-          python -m venv $(cat .venv)
+          python -m venv $(sed "s/\/envs\// /" .python-version)
           python -V
           python -m pip install --upgrade pip
 
@@ -144,7 +144,7 @@ jobs:
         run: |
           cd ~/graspit-project
           pyenv local $(sed "s/\/envs.*//" .python-version)
-          source $(cat .venv)/bin/activate
+          source $(sed "s/\/envs\// /" .python-version)/bin/activate
           curl -sSL https://install.python-poetry.org | python3 -
           poetry --version
           poetry config virtualenvs.in-project true
@@ -157,14 +157,14 @@ jobs:
         run: |
           cd ~/graspit-project
           pyenv local $(sed "s/\/envs.*//" .python-version)
-          source $(cat .venv)/bin/activate
+          source $(sed "s/\/envs\// /" .python-version)/bin/activate
           pytest
 
       - name: Towncrier
         run: |
           cd ~/graspit-project
           pyenv local $(sed "s/\/envs.*//" .python-version)
-          source $(cat .venv)/bin/activate
+          source $(sed "s/\/envs\// /" .python-version)/bin/activate
           git init
           towncrier create 123.added --no-edit
           towncrier build --version=999 --yes
@@ -174,7 +174,7 @@ jobs:
         run: |
           cd ~/graspit-project
           pyenv local $(sed "s/\/envs.*//" .python-version)
-          source $(cat .venv)/bin/activate
+          source $(sed "s/\/envs\// /" .python-version)/bin/activate
           detect-secrets --verbose scan \
             --exclude-files 'poetry\.lock' \
             --exclude-files '\.secrets\.baseline' \
