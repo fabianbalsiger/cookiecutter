@@ -11,9 +11,6 @@
 # Secrets
 .env
 
-# Personal TODO files
-TODO.txt
-
 # Environment
 venv/
 
@@ -22,18 +19,6 @@ venv/
 .coverage.*
 htmlcov
 
-# IDE config
-.idea/
-ipython_config.py
-profile_default/
-
-# Other
-.DS_Store
-ignore/
-*.log
-*.pem
-
-# Editor
-pyrightconfig.json
-
-# https://www.gitignore.io/
+# PyCharm
+# https://www.jetbrains.com/help/pycharm/setting-up-your-project.html#types
+.idea/workspace.xml
