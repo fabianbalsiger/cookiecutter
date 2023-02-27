@@ -1,6 +1,6 @@
 # Contributor Guide
 
-Your contributions to coefficient-cookiecutter are very welcome, and credit will always be given.
+Your contributions to graspit-cookiecutter are very welcome, and credit will always be given.
 
 ## How to request a feature
 
@@ -35,7 +35,7 @@ Fork the repository on [GitHub] and clone the fork to your local machine. You ca
 project from your development version:
 
 ```sh
-cookiecutter path/to/coefficient-cookiecutter
+cookiecutter path/to/cookiecutter
 ```
 
 Follow the instructions below for a full test including installing cookiecutter, generating a
@@ -47,17 +47,17 @@ packages, running the test suite, adding a Towncrier update, and running pre-com
 
 ```sh
 pipx install cookiecutter
-cookiecutter /path/to/coefficient-cookiecutter/
+cookiecutter /path/to/cookiecutter/
 # Use project defaults
-cd coefficient-project
+cd graspit-project
 
 # Install Python & dependencies
-pyenv shell $(cat .python-version)
+pyenv shell $(sed "s/\/envs.*//" .python-version)
 python -V  # check this is the correct version of Python
-mkvirtualenv $(cat .venv)
+pyenv virtualenv $(sed "s/\/envs\// /" .python-version)
 python -V  # check this is the correct version of Python
 python -m pip install --upgrade pip
-poetry install --no-root --remove-untracked
+poetry install --no-root --sync
 
 # Run tests
 pytest
@@ -76,10 +76,10 @@ pre-commit run --all-files --hook-stage=manual --show-diff-on-failure
 
 # Clean up
 deactivate
-rmvirtualenv $(cat .venv)
+pyenv uninstall $(cat .python-version)
 rm -rf ./.git/
 cd ..
-rm -r ./coefficient-project
+rm -r ./graspit-project
 ```
 
 ## How to submit changes
@@ -94,6 +94,6 @@ following guidelines for acceptance:
 It is recommended to open an issue before starting work on anything. This will allow a chance to
 talk it over with the owners and validate your approach.
 
-[github]: https://github.com/CoefficientSystems/coefficient-cookiecutter/
-[issue tracker]: https://github.com/CoefficientSystems/coefficient-cookiecutter/issues
-[pull request]: https://github.com/CoefficientSystems/coefficient-cookiecutter/pulls
+[github]: https://github.com/fabianbalsiger/cookiecutter/
+[issue tracker]: https://github.com/fabianbalsiger/cookiecutter/issues
+[pull request]: https://github.com/fabianbalsiger/cookiecutter/pulls
