@@ -35,7 +35,7 @@ jobs:
           which python
 
       - name: Set up Poetry cache
-        uses: actions/cache@v3.0.8
+        uses: actions/cache@v3
         with:
           path: venv
           key: venv-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
@@ -64,7 +64,7 @@ jobs:
           print("::set-output name=result::{}".format(result))
 
       - name: Restore pre-commit cache
-        uses: actions/cache@v3.0.8
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pre-commit
           key: ${{ steps.pre-commit-cache.outputs.result }}-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -110,11 +110,11 @@ jobs:
         run: |
           cd ~
           pwd
-          cookiecutter /home/runner/work/coefficient-cookiecutter/coefficient-cookiecutter --no-input
-          echo "cc_python_version=$(cat ~/coefficient-project/.python-version)"
-          echo "cc_python_version=$(cat ~/coefficient-project/.python-version)" >> $GITHUB_ENV
-          echo "cc_venv=$(cat ~/coefficient-project/.venv)"
-          echo "cc_venv=$(cat ~/coefficient-project/.venv)" >> $GITHUB_ENV
+          cookiecutter /home/runner/work/graspit-cookiecutter/graspit-cookiecutter --no-input
+          echo "cc_python_version=$(cat ~/graspit-project/.python-version)"
+          echo "cc_python_version=$(cat ~/graspit-project/.python-version)" >> $GITHUB_ENV
+          echo "cc_venv=$(cat ~/graspit-project/.venv)"
+          echo "cc_venv=$(cat ~/graspit-project/.venv)" >> $GITHUB_ENV
 
       # TODO: This can be replaced I think with actions/setup-python?
 
@@ -125,7 +125,7 @@ jobs:
 
       - name: Create cookiecuttered Python environment
         run: |
-          cd ~/coefficient-project
+          cd ~/graspit-project
           pwd
           pyenv local $(cat .python-version)
           python -V
@@ -134,14 +134,14 @@ jobs:
           python -m pip install --upgrade pip
 
       - name: Set up Poetry cache
-        uses: actions/cache@v3.0.8
+        uses: actions/cache@v3
         with:
           path: ${{ env.cc_venv }}
-          key: ${{ env.cc_venv }}-${{ matrix.python-version }}-${{ hashFiles('coefficient-project/poetry.lock') }}
+          key: ${{ env.cc_venv }}-${{ matrix.python-version }}-${{ hashFiles('graspit-project/poetry.lock') }}
 
       - name: Install Poetry and Python dependencies
         run: |
-          cd ~/coefficient-project
+          cd ~/graspit-project
           pyenv local $(cat .python-version)
           source $(cat .venv)/bin/activate
           curl -sSL https://install.python-poetry.org | python3 -
@@ -154,14 +154,14 @@ jobs:
 
       - name: pytest
         run: |
-          cd ~/coefficient-project
+          cd ~/graspit-project
           pyenv local $(cat .python-version)
           source $(cat .venv)/bin/activate
           pytest
 
       - name: Towncrier
         run: |
-          cd ~/coefficient-project
+          cd ~/graspit-project
           pyenv local $(cat .python-version)
           source $(cat .venv)/bin/activate
           git init
@@ -171,7 +171,7 @@ jobs:
 
       - name: pre-commit
         run: |
-          cd ~/coefficient-project
+          cd ~/graspit-project
           pyenv local $(cat .python-version)
           source $(cat .venv)/bin/activate
           detect-secrets --verbose scan \
