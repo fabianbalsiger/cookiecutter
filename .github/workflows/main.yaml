@@ -110,7 +110,7 @@ jobs:
         run: |
           cd ~
           pwd
-          cookiecutter /home/runner/work/graspit-cookiecutter/graspit-cookiecutter --no-input
+          cookiecutter /home/runner/work/cookiecutter/graspit-cookiecutter --no-input
           echo "cc_python_version=$(cat ~/graspit-project/.python-version)"
           echo "cc_python_version=$(cat ~/graspit-project/.python-version)" >> $GITHUB_ENV
           echo "cc_venv=$(cat ~/graspit-project/.venv)"
