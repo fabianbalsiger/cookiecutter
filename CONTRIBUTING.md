@@ -55,6 +55,7 @@ cd graspit-project
 pyenv shell $(sed "s/\/envs.*//" .python-version)
 python -V  # check this is the correct version of Python
 pyenv virtualenv $(sed "s/\/envs\// /" .python-version)
+pyenv activate $(cat .python-version)
 python -V  # check this is the correct version of Python
 python -m pip install --upgrade pip
 poetry install --no-root --sync
@@ -75,7 +76,6 @@ towncrier build --version=0.2
 pre-commit run --all-files --hook-stage=manual --show-diff-on-failure
 
 # Clean up
-deactivate
 pyenv uninstall $(cat .python-version)
 rm -rf ./.git/
 cd ..
