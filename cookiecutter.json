@@ -17,6 +17,7 @@
     "repo_url": "https://github.com/username/repo",
     "issue_url": "https://github.com/username/repo/issues/",
     "_copy_without_render": [
-        "*.changelog/template.md"
+        "*.changelog/template.md",
+        "*.github/workflows/codeql-analysis.yml"
     ]
 }
