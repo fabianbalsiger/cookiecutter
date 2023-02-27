@@ -5,13 +5,6 @@
 # Personal TODO files
 TODO.txt
 
-# VisualStudioCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
 # Environment
 venv/
 
