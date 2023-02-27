@@ -15,12 +15,12 @@ license = "UNLICENSED"
 python = "^3.9"
 # Everything below here is alphabetically sorted
 cookiecutter = "^2.1.1"
-mypy = "^1.0.0"
+mypy = "^1.0.1"
 requests = "^2.28.2"
 
 [tool.poetry.dev-dependencies]
 # Everything below here is alphabetically sorted
-black = "^22.12.0"
+black = "^23.1.0"
 detect-secrets = "1.4.0"
 flake8 = "^5.0.4"
 flake8-docstrings = "^1.7.0"
@@ -33,9 +33,9 @@ flake8-return = "^1.2.0"
 ipdb = "^0.13.11"
 isort = "^5.12.0"
 jupyter-black = "^0.3.3"
-pip-audit = "^2.4.4"
-pre-commit = "^3.0.4"
-pylint = "^2.16.1"
+pip-audit = "^2.4.14"
+pre-commit = "^3.1.0"
+pylint = "^2.16.2"
 pytest = "^7.2.1"
 towncrier = "^22.12.0"
 
