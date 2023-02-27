@@ -110,11 +110,12 @@ jobs:
         run: |
           cd ~
           pwd
-          cookiecutter /home/runner/work/cookiecutter/graspit-cookiecutter --no-input
-          echo "cc_python_version=$(cat ~/graspit-project/.python-version)"
-          echo "cc_python_version=$(cat ~/graspit-project/.python-version)" >> $GITHUB_ENV
-          echo "cc_venv=$(cat ~/graspit-project/.venv)"
-          echo "cc_venv=$(cat ~/graspit-project/.venv)" >> $GITHUB_ENV
+          cookiecutter /home/runner/work/cookiecutter/cookiecutter --no-input
+          cd graspit-project
+          echo "cc_python_version=$(sed "s/\/envs.*//" .python-version)"
+          echo "cc_python_version=$(sed "s/\/envs.*//" .python-version)" >> $GITHUB_ENV
+          echo "cc_venv=$(sed "s/\/envs\// /" .python-version)"
+          echo "cc_venv=$(sed "s/\/envs\// /" .python-version)" >> $GITHUB_ENV
 
       # TODO: This can be replaced I think with actions/setup-python?
 
@@ -142,7 +143,7 @@ jobs:
       - name: Install Poetry and Python dependencies
         run: |
           cd ~/graspit-project
-          pyenv local $(cat .python-version)
+          pyenv local $(sed "s/\/envs.*//" .python-version)
           source $(cat .venv)/bin/activate
           curl -sSL https://install.python-poetry.org | python3 -
           poetry --version
@@ -155,14 +156,14 @@ jobs:
       - name: pytest
         run: |
           cd ~/graspit-project
-          pyenv local $(cat .python-version)
+          pyenv local $(sed "s/\/envs.*//" .python-version)
           source $(cat .venv)/bin/activate
           pytest
 
       - name: Towncrier
         run: |
           cd ~/graspit-project
-          pyenv local $(cat .python-version)
+          pyenv local $(sed "s/\/envs.*//" .python-version)
           source $(cat .venv)/bin/activate
           git init
           towncrier create 123.added --no-edit
@@ -172,7 +173,7 @@ jobs:
       - name: pre-commit
         run: |
           cd ~/graspit-project
-          pyenv local $(cat .python-version)
+          pyenv local $(sed "s/\/envs.*//" .python-version)
           source $(cat .venv)/bin/activate
           detect-secrets --verbose scan \
             --exclude-files 'poetry\.lock' \
