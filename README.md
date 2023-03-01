@@ -19,7 +19,7 @@
 
 <!-- badges-end -->
 
-Modern [Cookiecutter] template for Python-based data science/engineering/analytics projects.
+Modern [cookiecutter] template for Python-based data science/engineering/analytics projects.
 
 Inspired by:
 
@@ -58,6 +58,7 @@ cookiecutter https://github.com/fabianbalsiger/cookiecutter
 - Import sorting with [isort]
 - Automated Python syntax upgrades with [pyupgrade]
 - Testing with [pytest]
+- Measuring code coverage with [coverage]
 - Continuous integration with [GitHub Actions]
 - [Twelve Factor] app principles
 
@@ -94,6 +95,7 @@ issues, setup a development environment, test this cookiecutter and contribute t
 [cookiecutter-data-science]: https://drivendata.github.io/cookiecutter-data-science/
 [cookiecutter-hypermodern-python]: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 [cookiecutter]: https://github.com/cookiecutter/cookiecutter
+[coverage]: https://coverage.readthedocs.io/en/latest/
 [dependabot]: https://github.com/dependabot
 [detect-secrets]: https://github.com/yelp/detect-secrets
 [direnv]: https://direnv.net/
