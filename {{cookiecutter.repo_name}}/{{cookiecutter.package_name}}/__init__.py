@@ -1,4 +1,4 @@
-"""Generated using graspit-cookiecutter"""
+"""Generated using graspit-cookiecutter."""
 
 from __future__ import annotations
 
