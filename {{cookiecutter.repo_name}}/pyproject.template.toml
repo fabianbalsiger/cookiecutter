@@ -18,9 +18,10 @@ packages = [
 python = "^{{ cookiecutter.python_version }}"
 # Everything below here is alphabetically sorted
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 # Everything below here is alphabetically sorted
 black = "^22.8.0"
+coverage = "^7.2.1"
 detect-secrets = "1.2.0"
 flake8 = "^4.0.1"
 flake8-docstrings = "^1.6.0"
