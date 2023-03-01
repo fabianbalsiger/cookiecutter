@@ -28,8 +28,7 @@ python -m pip install --upgrade pip
 poetry self update
 poetry install --no-root --sync
 
-# Create templated .env for storing secrets
-cp .env.template .env
+# Edit .env for storing secrets (.env is a copy of .env.template)
 direnv allow
 
 # Create and audit secrets baseline

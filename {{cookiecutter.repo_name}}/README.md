@@ -6,9 +6,9 @@
 
 ## Project cheatsheet
 
-  - **pre-commit:** `pre-commit run --all-files`
+  - **pre-commit:** `pre-commit run --all-files --hook-stage=manual`
   - **pytest:** `pytest` or `pytest -s`
-  - **coverage:** `coverage run -m pytest` or `coverage html`
+  - **coverage:** `coverage run -m pytest` followed by `coverage html` or `coverage report`
   - **poetry sync:** `poetry install --no-root --sync`
   - **updating requirements:** see [docs/updating_requirements.md](docs/updating_requirements.md)
 {% if cookiecutter.use_towncrier == 'y' -%}
